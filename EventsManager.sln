@@ -5,6 +5,8 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norriq.DataVerse.EventsManager.Plugins", "Norriq.DataVerse.EventsManager.Plugins\Norriq.DataVerse.EventsManager.Plugins.csproj", "{939BFA56-D5CB-4C3F-B966-68C9CCC792AA}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Norriq.DataVerse.EventsManager.XrmContext", "Norriq.DataVerse.EventsManager.XrmContext\Norriq.DataVerse.EventsManager.XrmContext.shproj", "{1A6F6A67-E28A-4F65-804F-39582C4606AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,5 +23,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8D515B2A-A0D7-4752-B322-70D0B896610E}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Norriq.DataVerse.EventsManager.XrmContext\Norriq.DataVerse.EventsManager.XrmContext.projitems*{1a6f6a67-e28a-4f65-804f-39582c4606ab}*SharedItemsImports = 13
+		Norriq.DataVerse.EventsManager.XrmContext\Norriq.DataVerse.EventsManager.XrmContext.projitems*{939bfa56-d5cb-4c3f-b966-68c9ccc792aa}*SharedItemsImports = 4
 	EndGlobalSection
 EndGlobal
