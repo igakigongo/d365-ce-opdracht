@@ -3221,6 +3221,18 @@ namespace Norriq.DataVerse.EventsManager.XrmContext.Models {
         }
         
         /// <summary>
+        /// <para>Exchange rate for the currency associated with the entity with respect to the base currency.</para>
+        /// <para>Display Name: Exchange Rate</para>
+        /// </summary>
+        [AttributeLogicalName("exchangerate")]
+        [DisplayName("Exchange Rate")]
+        public decimal? ExchangeRate {
+            get {
+                return GetAttributeValue<decimal?>("exchangerate");
+            }
+        }
+        
+        /// <summary>
         /// <para>Sequence number of the import that created this record.</para>
         /// <para>Display Name: Import Sequence Number</para>
         /// </summary>
@@ -3370,6 +3382,21 @@ namespace Norriq.DataVerse.EventsManager.XrmContext.Models {
         }
         
         /// <summary>
+        /// <para>Unique identifier of the currency associated with the entity.</para>
+        /// <para>Display Name: Currency</para>
+        /// </summary>
+        [AttributeLogicalName("transactioncurrencyid")]
+        [DisplayName("Currency")]
+        public EntityReference TransactionCurrencyId {
+            get {
+                return GetAttributeValue<EntityReference>("transactioncurrencyid");
+            }
+            set {
+                SetAttributeValue("transactioncurrencyid", value);
+            }
+        }
+        
+        /// <summary>
         /// <para>Time zone code that was in use when the record was created.</para>
         /// <para>Display Name: UTC Conversion Time Zone Code</para>
         /// </summary>
@@ -3398,6 +3425,20 @@ namespace Norriq.DataVerse.EventsManager.XrmContext.Models {
         }
         
         /// <summary>
+        /// <para>Display Name: Cost</para>
+        /// </summary>
+        [AttributeLogicalName("nrq_cost")]
+        [DisplayName("Cost")]
+        public decimal? nrq_Cost {
+            get {
+                return GetMoneyValue("nrq_cost");
+            }
+            set {
+                SetMoneyValue("nrq_cost", value);
+            }
+        }
+        
+        /// <summary>
         /// <para>Display Name: Event Type</para>
         /// </summary>
         [AttributeLogicalName("nrq_eventtype")]
@@ -3409,6 +3450,18 @@ namespace Norriq.DataVerse.EventsManager.XrmContext.Models {
             }
             set {
                 SetAttributeValue("nrq_eventtype", value);
+            }
+        }
+        
+        /// <summary>
+        /// <para>Value of the Cost in base currency.</para>
+        /// <para>Display Name: Cost (Base)</para>
+        /// </summary>
+        [AttributeLogicalName("nrq_cost_base")]
+        [DisplayName("Cost (Base)")]
+        public decimal? nrq_cost_Base {
+            get {
+                return GetMoneyValue("nrq_cost_base");
             }
         }
         

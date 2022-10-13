@@ -115,7 +115,6 @@
     <Compile Include="BaseLayer\Serialization\JSONSerializer.cs" />
     <Compile Include="BaseLayer\Telemetry\AppInsightsTracingService.cs" />
     <Compile Include="CalculateEventCostPlugin.cs" />
-    <Compile Include="Helpers\PluginExecutionContextExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
