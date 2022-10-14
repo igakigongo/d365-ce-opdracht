@@ -116,6 +116,7 @@
     <Compile Include="BaseLayer\Telemetry\AppInsightsTracingService.cs" />
     <Compile Include="CalculateEventCostPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CalculateEventIncomePlugin.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="EventsManagerKey.snk" />
