@@ -1,15 +1,16 @@
-﻿namespace Norriq.DataVerse.EventsManager.XrmContext.Models
+﻿using Microsoft.Xrm.Sdk;
+
+namespace Norriq.DataVerse.EventsManager.XrmContext.Models
 {
     public partial class nrq_Registration
     {
-        public bool IsPaid()
+        public void ThrowIfCannotBeDeleted()
         {
-            return nrq_PaymentDate != null;
-        }
+            if (nrq_WasPresent.GetValueOrDefault())
+                throw new InvalidPluginExecutionException("Cannot delete a Registration for a user who has already attended the event");
 
-        public bool WasAttendedByUser()
-        {
-            return nrq_WasPresent.GetValueOrDefault();
+            if (nrq_PaymentDate.HasValue)
+                throw new InvalidPluginExecutionException("Paid registrations can not be removed");
         }
     }
 }

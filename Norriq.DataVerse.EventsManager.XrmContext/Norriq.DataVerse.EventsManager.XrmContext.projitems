@@ -9,6 +9,7 @@
     <Import_RootNamespace>Norriq.DataVerse.EventsManager.XrmContext</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Models\nrq_Event.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\nrq_Registration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\XrmContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\XrmExtensions.cs" />

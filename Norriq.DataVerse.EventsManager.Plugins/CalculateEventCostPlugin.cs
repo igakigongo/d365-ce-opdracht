@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.Xrm.Sdk;
 using Norriq.DataVerse.EventsManager.XrmContext.Models;
 using Norriq.DataVerse.Plugins.BaseLayer;

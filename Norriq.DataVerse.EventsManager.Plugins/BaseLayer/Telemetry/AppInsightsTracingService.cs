@@ -1,10 +1,7 @@
-﻿using Microsoft.Crm.Sdk.Messages;
-using Microsoft.SqlServer.Server;
-using Microsoft.Xrm.Sdk;
+﻿using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.PluginTelemetry;
 using System;
 using System.Collections.Generic;
-using System.ServiceModel.Channels;
 
 namespace Norriq.DataVerse.Plugins.BaseLayer.Telemetry
 {
