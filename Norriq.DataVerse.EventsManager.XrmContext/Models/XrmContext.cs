@@ -2878,6 +2878,20 @@ namespace Norriq.DataVerse.EventsManager.XrmContext.Models {
         }
         
         /// <summary>
+        /// <para>Display Name: Income</para>
+        /// </summary>
+        [AttributeLogicalName("nrq_income")]
+        [DisplayName("Income")]
+        public decimal? nrq_Income {
+            get {
+                return GetMoneyValue("nrq_income");
+            }
+            set {
+                SetMoneyValue("nrq_income", value);
+            }
+        }
+        
+        /// <summary>
         /// <para>Display Name: Location</para>
         /// </summary>
         [AttributeLogicalName("nrq_location")]
@@ -2974,6 +2988,18 @@ namespace Norriq.DataVerse.EventsManager.XrmContext.Models {
             }
             set {
                 SetMoneyValue("nrq_totalcost", value);
+            }
+        }
+        
+        /// <summary>
+        /// <para>Value of the Income in base currency.</para>
+        /// <para>Display Name: Income (Base)</para>
+        /// </summary>
+        [AttributeLogicalName("nrq_income_base")]
+        [DisplayName("Income (Base)")]
+        public decimal? nrq_income_Base {
+            get {
+                return GetMoneyValue("nrq_income_base");
             }
         }
         
