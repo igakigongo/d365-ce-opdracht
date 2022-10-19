@@ -17,5 +17,10 @@
         {
             nrq_Income = nrq_Income.GetValueOrDefault() + nrq_Price.GetValueOrDefault();
         }
+
+        public void CalculateIncome(int countOfRegistrations)
+        {
+            nrq_Income = nrq_Price.GetValueOrDefault() * countOfRegistrations;
+        }
     }
 }
