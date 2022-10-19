@@ -22,7 +22,7 @@ using System.Runtime.Serialization;
 [assembly: ProxyTypesAssembly()]
 
 
-namespace Norriq.DataVerse.EventsManager.XrmContext.Models {
+namespace Norriq.DataVerse.Events.XrmContext.Models {
     
     
     /// <summary>

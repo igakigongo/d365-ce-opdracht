@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.Xrm.Sdk;
-using Norriq.DataVerse.EventsManager.XrmContext.Models;
+using Norriq.DataVerse.Events.XrmContext.Models;
 using Norriq.DataVerse.Plugins.BaseLayer;
 using Norriq.DataVerse.Plugins.BaseLayer.Telemetry;
 
-namespace Norriq.DataVerse.EventsManager.Plugins
+namespace Norriq.DataVerse.Events.Plugins
 {
     public class CalculateEventIncomePlugin : BasePlugin
     {

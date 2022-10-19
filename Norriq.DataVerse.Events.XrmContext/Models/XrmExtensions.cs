@@ -10,7 +10,7 @@ using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Sdk.Messages;
 
-namespace Norriq.DataVerse.EventsManager.XrmContext.Models
+namespace Norriq.DataVerse.Events.XrmContext.Models
 {
 
     public enum EmptyEnum { }

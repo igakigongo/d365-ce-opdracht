@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xrm.Sdk;
 
-namespace Norriq.DataVerse.EventsManager.XrmContext.Models
+namespace Norriq.DataVerse.Events.XrmContext.Models
 {
     public partial class nrq_Registration
     {
