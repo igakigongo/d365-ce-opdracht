@@ -2,25 +2,20 @@
 {
     public partial class nrq_Event
     {
-        public bool CanApplyUpdateOnDelete(nrq_Registration deletedRegistration)
-        {
-            return nrq_Income.GetValueOrDefault() > 0 &&
-                deletedRegistration.nrq_Price.GetValueOrDefault() <= nrq_Income.GetValueOrDefault();
-        }
-
-        public void DecrementIncome(nrq_Registration registration)
-        {
-            nrq_Income = nrq_Income.GetValueOrDefault() - registration.nrq_Price.GetValueOrDefault();   
-        }
-
-        public void IncrementIncome()
-        {
-            nrq_Income = nrq_Income.GetValueOrDefault() + nrq_Price.GetValueOrDefault();
-        }
-
         public void CalculateIncome(int countOfRegistrations)
         {
             nrq_Income = nrq_Price.GetValueOrDefault() * countOfRegistrations;
         }
+
+        public string GetFormattedPriceAndIncomeTraceMessage()
+        {
+            return string
+            .Format("{0}: Price => {1}, Income => {2}", nameof(nrq_Event), nrq_Price, nrq_Income);
+        }
+
+        public nrq_Event GetIncomeUpdateEntity() => new nrq_Event(Id)
+        {
+            nrq_Income = nrq_Income
+        };
     }
 }

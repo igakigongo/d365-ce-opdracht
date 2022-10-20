@@ -12,18 +12,20 @@ namespace Norriq.DataVerse.Events.Plugins
 
         private IPluginExecutionContext Context { get; set; }
         private IOrganizationService Service { get; set; }
+        private AppInsightsTracingService AppInsightsTracingService { get; set; }
 
         protected override void Execute(IPluginExecutionContext context, IOrganizationService service, AppInsightsTracingService tracingService)
         {
-            Init(context, service);
+            Init(context, service,tracingService);
             CalculateIncomeForEventTriggers();
             CalculateIncomeForRegistrationTriggers();
         }
 
-        private void Init(IPluginExecutionContext context, IOrganizationService service)
+        private void Init(IPluginExecutionContext context, IOrganizationService service, AppInsightsTracingService tracingService)
         {
             Context = context;
             Service = service;
+            AppInsightsTracingService = tracingService;
         }
 
         private void CalculateIncomeForEventTriggers()
@@ -34,8 +36,11 @@ namespace Norriq.DataVerse.Events.Plugins
             switch (Context.MessageName)
             {
                 case MsgUpdate:
+                    AppInsightsTracingService.LogTrace($"{nameof(CalculateEventIncomePlugin)} - {nameof(CalculateIncomeForEventTriggers)}: {DateTime.Now:f}");
                     var nrqEvent = _postImage.ToEntity<nrq_Event>();
+                    AppInsightsTracingService.LogTrace(nrqEvent.GetFormattedPriceAndIncomeTraceMessage());
                     UpdateEventIncome(nrqEvent);
+                    AppInsightsTracingService.LogTrace(nrqEvent.GetFormattedPriceAndIncomeTraceMessage());
                     break;
             }
         }
@@ -86,7 +91,7 @@ namespace Norriq.DataVerse.Events.Plugins
 
             var countOfActiveRegistrations = GetCountOfActiveRegistrations(nrqEvent.Id);
             nrqEvent.CalculateIncome(countOfActiveRegistrations);
-            Service.Update(nrqEvent);
+            Service.Update(nrqEvent.GetIncomeUpdateEntity());
         }
     }
 }
