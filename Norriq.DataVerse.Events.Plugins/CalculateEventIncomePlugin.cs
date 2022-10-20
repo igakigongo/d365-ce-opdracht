@@ -15,65 +15,16 @@ namespace Norriq.DataVerse.Events.Plugins
         protected override void Execute(IPluginExecutionContext context, IOrganizationService service, AppInsightsTracingService tracingService)
         {
             Init(service);
-            nrq_Event currentEvent, previousEvent;
-            nrq_Registration currentRegistration, previousRegistration;
-
             switch (context.PrimaryEntityName)
             {
                 case "nrq_event":
-                    OnEventPriceChangedRecalculateForecastIncome(_postImage.Id);
+                    CalculateIncomeForEventTriggers();
                     break;
 
-                default:
-                    break;
-            }
-
-            return;
-
-            switch (context.MessageName)
-            {
-                case MsgCreate:
-                    currentRegistration = _target.ToEntity<nrq_Registration>();
-                    // currentEvent = GetEvent(service, currentRegistration.nrq_EventId.Id);
-                    currentEvent.IncrementIncome();
-                    service.Update(currentEvent);
-                    break;
-
-                case MsgDelete:
-                    currentRegistration = _preImage.ToEntity<nrq_Registration>();
-                    currentRegistration.ThrowIfCannotBeDeleted();
-                    // currentEvent = GetEvent(service, currentRegistration.nrq_EventId.Id);
-                    if (currentEvent.CanApplyUpdateOnDelete(currentRegistration))
-                    {
-                        currentEvent.DecrementIncome(currentRegistration);
-                        service.Update(currentEvent);
-                    }
-                    break;
-
-                case MsgUpdate:
-                    // get registrations
-                    previousRegistration = _preImage.ToEntity<nrq_Registration>();
-                    currentRegistration = _target.ToEntity<nrq_Registration>();
-                    
-                    // get events
-                    //currentEvent = GetEvent(service, currentRegistration.nrq_EventId.Id);
-                    // previousEvent = GetEvent(service, previousRegistration.nrq_EventId.Id);
-
-                    // update income in events
-                    currentEvent.IncrementIncome();
-                    currentEvent.DecrementIncome(previousRegistration);
-                    previousEvent.DecrementIncome(previousRegistration);
-
-                    // call service update
-                    service.Update(previousEvent);
-                    service.Update(currentEvent);
+                case "nrq_registration":
+                    CalculateIncomeForRegistrationTriggers(context.MessageName);
                     break;
             }
-        }
-
-        private nrq_Event GetEvent(Guid id)
-        {
-            return nrq_Event.Retrieve(Service, id, x => x.nrq_Price);
         }
 
         private void Init(IOrganizationService service)
@@ -81,20 +32,56 @@ namespace Norriq.DataVerse.Events.Plugins
             Service = service;
         }
 
-        private void OnEventPriceChangedRecalculateForecastIncome(Guid eventId)
+        private void CalculateIncomeForEventTriggers()
+        {
+            var nrqEvent = _postImage.ToEntity<nrq_Event>();
+            UpdateEventIncome(nrqEvent);
+        }
+
+        private void CalculateIncomeForRegistrationTriggers(string messageName)
+        {
+            switch (messageName)
+            {
+                case MsgCreate:
+                case MsgDelete:
+                    var sourceEntity = messageName == MsgCreate ? _postImage : _preImage;
+                    var registration = sourceEntity.ToEntity<nrq_Registration>();
+                    var nrqEvent = nrq_Event.Retrieve(Service, registration.nrq_EventId.Id, x => x.nrq_Price);
+                    UpdateEventIncome(nrqEvent);
+                    break;
+
+                case MsgUpdate:
+                    var prevRegistration = _preImage.ToEntity<nrq_Registration>();
+                    var curRegistration = _postImage.ToEntity<nrq_Registration>();
+
+                    var previousEvent = nrq_Event.Retrieve(Service, prevRegistration.nrq_EventId.Id, x => x.nrq_Price);
+                    var currentEvent = nrq_Event.Retrieve(Service, curRegistration.nrq_EventId.Id, x => x.nrq_Price);
+
+                    UpdateEventIncome(previousEvent);
+                    UpdateEventIncome(currentEvent);
+                    break;
+            }
+        }
+
+        private int GetCountOfActiveRegistrations(Guid eventId)
         {
             var context = new XrmContext.Models.XrmContext(Service);
-            var nrqEvent = GetEvent(eventId);
-            if (nrqEvent != null)
-            {
-                var registrations = context.nrq_RegistrationSet
-                    .Where(x => x.nrq_EventId.Id == eventId && x.statecode == nrq_RegistrationState.Active)
-                    .Select(x => 1)
-                    .ToList();
+            var registrations = context.nrq_RegistrationSet
+                                       .Where(x => x.nrq_EventId.Id == eventId && x.statecode == nrq_RegistrationState.Active)
+                                       .Select(x => 1)
+                                       .ToList();
 
-                nrqEvent.CalculateIncome(registrations.Count);
-                Service.Update(nrqEvent);
-            }
+            return registrations.Count;
+        }
+
+        private void UpdateEventIncome(nrq_Event nrqEvent)
+        {
+            if (nrqEvent == null)
+                throw new InvalidPluginExecutionException("Event to update is null");
+
+            var countOfActiveRegistrations = GetCountOfActiveRegistrations(nrqEvent.Id);
+            nrqEvent.CalculateIncome(countOfActiveRegistrations);
+            Service.Update(nrqEvent);
         }
     }
 }
