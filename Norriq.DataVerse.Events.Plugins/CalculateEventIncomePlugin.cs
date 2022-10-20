@@ -10,41 +10,46 @@ namespace Norriq.DataVerse.Events.Plugins
     public class CalculateEventIncomePlugin : BasePlugin
     {
 
+        private IPluginExecutionContext Context { get; set; }
         private IOrganizationService Service { get; set; }
 
         protected override void Execute(IPluginExecutionContext context, IOrganizationService service, AppInsightsTracingService tracingService)
         {
-            Init(service);
-            switch (context.PrimaryEntityName)
-            {
-                case "nrq_event":
-                    CalculateIncomeForEventTriggers();
-                    break;
-
-                case "nrq_registration":
-                    CalculateIncomeForRegistrationTriggers(context.MessageName);
-                    break;
-            }
+            Init(context, service);
+            CalculateIncomeForEventTriggers();
+            CalculateIncomeForRegistrationTriggers();
         }
 
-        private void Init(IOrganizationService service)
+        private void Init(IPluginExecutionContext context, IOrganizationService service)
         {
+            Context = context;
             Service = service;
         }
 
         private void CalculateIncomeForEventTriggers()
         {
-            var nrqEvent = _postImage.ToEntity<nrq_Event>();
-            UpdateEventIncome(nrqEvent);
+            if (!string.Equals(Context.PrimaryEntityName, "nrq_event", StringComparison.OrdinalIgnoreCase))
+                return;
+
+            switch (Context.MessageName)
+            {
+                case MsgUpdate:
+                    var nrqEvent = _postImage.ToEntity<nrq_Event>();
+                    UpdateEventIncome(nrqEvent);
+                    break;
+            }
         }
 
-        private void CalculateIncomeForRegistrationTriggers(string messageName)
+        private void CalculateIncomeForRegistrationTriggers()
         {
-            switch (messageName)
+            if (!string.Equals(Context.PrimaryEntityName, "nrq_registration", StringComparison.OrdinalIgnoreCase))
+                return;
+
+            switch (Context.MessageName)
             {
                 case MsgCreate:
                 case MsgDelete:
-                    var sourceEntity = messageName == MsgCreate ? _postImage : _preImage;
+                    var sourceEntity = Context.MessageName == MsgCreate ? _postImage : _preImage;
                     var registration = sourceEntity.ToEntity<nrq_Registration>();
                     var nrqEvent = nrq_Event.Retrieve(Service, registration.nrq_EventId.Id, x => x.nrq_Price);
                     UpdateEventIncome(nrqEvent);
