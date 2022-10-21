@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Query;
 using Norriq.DataVerse.Events.XrmContext.Models;
 using Norriq.DataVerse.Plugins.BaseLayer;
 using Norriq.DataVerse.Plugins.BaseLayer.Telemetry;
@@ -82,6 +84,18 @@ namespace Norriq.DataVerse.Events.Plugins
                                        .ToList();
 
             return registrations.Count;
+
+            //var query = new QueryExpression("nrq_registration");
+            //query.ColumnSet = new ColumnSet("nrq_registrationid");
+            //query.Criteria.AddCondition("nrq_eventid", ConditionOperator.Equal, eventId);
+            //query.Criteria.AddCondition("statecode", ConditionOperator.Equal, (int)nrq_RegistrationState.Active);
+            //return Service.RetrieveMultiple(query).Entities.Count();
+
+
+            //var query = new FetchExpression(fetchXml);
+            //var result = Service.RetrieveMultiple(query).Entities.FirstOrDefault();
+            //var aliasedValue = result.GetAttributeValue<AliasedValue>("");
+            //return (int)aliasedValue.Value;
         }
 
         private void UpdateEventIncome(nrq_Event nrqEvent)

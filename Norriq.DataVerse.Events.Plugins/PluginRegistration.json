@@ -1,0 +1,170 @@
+﻿{
+  "Id": "5a0fd3df-c205-442d-8b06-ab351f265f0e",
+  "Name": "Norriq.DataVerse.Events.Plugins.dll",
+  "IsolationMode": "Sandbox",
+  "SourceType": "Database",
+  "Version": "1.0.8328.24028",
+  "PluginTypes": [
+    {
+      "Id": "bc807054-a65a-4a02-8415-a160f93aa621",
+      "Description": null,
+      "Name": "Norriq.DataVerse.Events.Plugins.CalculateEventCostPlugin",
+      "FriendlyName": "47be5553-d30f-4f59-9630-62a3b633c119",
+      "TypeName": "Norriq.DataVerse.Events.Plugins.CalculateEventCostPlugin",
+      "Steps": [
+        {
+          "Id": "7ec24084-9e4f-ed11-bba2-000d3a4bbea4",
+          "Name": "Norriq.DataVerse.Events.Plugins.CalculateEventCostPlugin: Create of nrq_event",
+          "MessageName": "Create",
+          "Description": null,
+          "CustomConfiguration": null,
+          "FilteringAttributes": null,
+          "ImpersonatingUserFullname": "",
+          "Mode": "Synchronous",
+          "PrimaryEntityName": "nrq_event",
+          "Rank": 1,
+          "Stage": "Preoperation",
+          "SupportedDeployment": "ServerOnly",
+          "AsyncAutoDelete": false,
+          "StateCode": "Enabled",
+          "Images": []
+        },
+        {
+          "Id": "dfb146ab-9e4f-ed11-bba2-000d3a4bbea4",
+          "Name": "Norriq.DataVerse.Events.Plugins.CalculateEventCostPlugin: Update of nrq_event",
+          "MessageName": "Update",
+          "Description": null,
+          "CustomConfiguration": null,
+          "FilteringAttributes": "nrq_eventtypeid",
+          "ImpersonatingUserFullname": "",
+          "Mode": "Synchronous",
+          "PrimaryEntityName": "nrq_event",
+          "Rank": 1,
+          "Stage": "Preoperation",
+          "SupportedDeployment": "ServerOnly",
+          "AsyncAutoDelete": false,
+          "StateCode": "Enabled",
+          "Images": []
+        }
+      ],
+      "WorkflowActivityGroupName": null
+    },
+    {
+      "Id": "5ef24986-35bb-48ad-8987-4190bdf0c673",
+      "Description": null,
+      "Name": "Norriq.DataVerse.Events.Plugins.CalculateEventIncomePlugin",
+      "FriendlyName": "a8275020-4c6b-4261-aedf-75dd0c349ed7",
+      "TypeName": "Norriq.DataVerse.Events.Plugins.CalculateEventIncomePlugin",
+      "Steps": [
+        {
+          "Id": "42c05d03-a04f-ed11-bba2-000d3a4bbea4",
+          "Name": "Norriq.DataVerse.Events.Plugins.CalculateEventIncomePlugin: Update of nrq_event",
+          "MessageName": "Update",
+          "Description": null,
+          "CustomConfiguration": null,
+          "FilteringAttributes": "nrq_price",
+          "ImpersonatingUserFullname": "System Administrator",
+          "Mode": "Synchronous",
+          "PrimaryEntityName": "nrq_event",
+          "Rank": 1,
+          "Stage": "Postoperation",
+          "SupportedDeployment": "ServerOnly",
+          "AsyncAutoDelete": false,
+          "StateCode": "Enabled",
+          "Images": [
+            {
+              "Id": "d928c2b2-a04f-ed11-bba2-000d3a4bbea4",
+              "Attributes": "nrq_price",
+              "EntityAlias": "PostImage",
+              "MessagePropertyName": "Target",
+              "ImageType": "PostImage"
+            }
+          ]
+        },
+        {
+          "Id": "5620e45f-a14f-ed11-bba2-000d3a4bbea4",
+          "Name": "Norriq.DataVerse.Events.Plugins.CalculateEventIncomePlugin: Create of nrq_registration",
+          "MessageName": "Create",
+          "Description": null,
+          "CustomConfiguration": null,
+          "FilteringAttributes": null,
+          "ImpersonatingUserFullname": "System Administrator",
+          "Mode": "Synchronous",
+          "PrimaryEntityName": "nrq_registration",
+          "Rank": 1,
+          "Stage": "Postoperation",
+          "SupportedDeployment": "ServerOnly",
+          "AsyncAutoDelete": false,
+          "StateCode": "Enabled",
+          "Images": [
+            {
+              "Id": "ced42460-e34f-ed11-bba2-000d3a4bbea4",
+              "Attributes": "nrq_eventid",
+              "EntityAlias": "PostImage",
+              "MessagePropertyName": "id",
+              "ImageType": "PostImage"
+            }
+          ]
+        },
+        {
+          "Id": "c42a24c9-a14f-ed11-bba2-000d3a4bbea4",
+          "Name": "Norriq.DataVerse.Events.Plugins.CalculateEventIncomePlugin: Delete of nrq_registration",
+          "MessageName": "Delete",
+          "Description": null,
+          "CustomConfiguration": null,
+          "FilteringAttributes": null,
+          "ImpersonatingUserFullname": "System Administrator",
+          "Mode": "Synchronous",
+          "PrimaryEntityName": "nrq_registration",
+          "Rank": 1,
+          "Stage": "Postoperation",
+          "SupportedDeployment": "ServerOnly",
+          "AsyncAutoDelete": false,
+          "StateCode": "Enabled",
+          "Images": [
+            {
+              "Id": "7573f8e7-a14f-ed11-bba2-000d3a4bbea4",
+              "Attributes": "nrq_eventid",
+              "EntityAlias": "PreImage",
+              "MessagePropertyName": "Target",
+              "ImageType": "PreImage"
+            }
+          ]
+        },
+        {
+          "Id": "a8030a9e-a14f-ed11-bba2-000d3a4bbea4",
+          "Name": "Norriq.DataVerse.Events.Plugins.CalculateEventIncomePlugin: Update of nrq_registration",
+          "MessageName": "Update",
+          "Description": null,
+          "CustomConfiguration": null,
+          "FilteringAttributes": "nrq_eventid,statecode",
+          "ImpersonatingUserFullname": "System Administrator",
+          "Mode": "Synchronous",
+          "PrimaryEntityName": "nrq_registration",
+          "Rank": 1,
+          "Stage": "Postoperation",
+          "SupportedDeployment": "ServerOnly",
+          "AsyncAutoDelete": false,
+          "StateCode": "Enabled",
+          "Images": [
+            {
+              "Id": "50e3c826-a24f-ed11-bba2-000d3a4bbea4",
+              "Attributes": "nrq_eventid",
+              "EntityAlias": "PostImage",
+              "MessagePropertyName": "Target",
+              "ImageType": "PostImage"
+            },
+            {
+              "Id": "bb748b07-a24f-ed11-bba2-000d3a4bbea4",
+              "Attributes": "nrq_eventid",
+              "EntityAlias": "PreImage",
+              "MessagePropertyName": "Target",
+              "ImageType": "PreImage"
+            }
+          ]
+        }
+      ],
+      "WorkflowActivityGroupName": null
+    }
+  ]
+}
