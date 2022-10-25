@@ -318,6 +318,8 @@
     <Content Include="XrmDefinitelyTyped\XrmDefinitelyTyped.xml" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="WebResources\TypeScript\Event.ts" />
+    <TypeScriptCompile Include="WebResources\TypeScript\Registration.ts" />
     <TypeScriptCompile Include="WebResources\TypeScript\Typings\XRM\dg.xrmquery.web.d.ts" />
     <TypeScriptCompile Include="WebResources\TypeScript\Typings\XRM\Form\connection\Main\Information.d.ts" />
     <TypeScriptCompile Include="WebResources\TypeScript\Typings\XRM\Form\nrq_eventtype\Main\Information.d.ts" />
