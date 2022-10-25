@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "@delegateas/xrmdefinitelytyped": "^4.3.10"
+  }, 
+  "scripts": {
+    "dev": "tsc --watch"
   }
 }
