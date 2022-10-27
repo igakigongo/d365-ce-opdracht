@@ -13,23 +13,37 @@ var Norriq;
     var Registration;
     (function (Registration) {
         let formContext;
+        let paymentDateAttribute;
         const NOTIFICATION_ID_EVENT_FINISHED = 'EventFinished';
         const NOTIFICATION_ID_EVENT_STARTED = 'EventStarted';
+        const NOTIFICATION_ID_PAYMENT_LATE = 'PaymentLate';
         function onload(executionContext) {
             return __awaiter(this, void 0, void 0, function* () {
                 formContext = executionContext.getFormContext();
                 if (formContext === null)
                     return;
+                paymentDateAttribute = formContext.getAttribute("nrq_paymentdate");
+                paymentDateAttribute.addOnChange(showNotificationIfPaymentIsLate);
                 setPaymentDateOnCreate();
-                onEventFormOpened();
+                addOnSaveEventHandler();
+                yield onEventFormOpened();
             });
         }
         Registration.onload = onload;
-        function onsave(executionContext) {
-            formContext = executionContext.getFormContext();
-            // showNotificationIfPaymentIsLate();
+        /**
+         * this might not be necessary since the OnChangeEvent is active on the payment_date field
+         * just leave it here - to remember that you can run some code - post save (success/error handlers)
+         */
+        function addOnSaveEventHandler() {
+            formContext.data.entity.addOnPostSave(function (context) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    const eventArgs = context === null || context === void 0 ? void 0 : context.getEventArgs();
+                    if (eventArgs === null || eventArgs === void 0 ? void 0 : eventArgs.getIsSaveSuccess()) {
+                        yield showNotificationIfPaymentIsLate();
+                    }
+                });
+            });
         }
-        Registration.onsave = onsave;
         function getRelatedEventData() {
             var _a;
             return __awaiter(this, void 0, void 0, function* () {
@@ -46,31 +60,44 @@ var Norriq;
         function onEventFormOpened() {
             return __awaiter(this, void 0, void 0, function* () {
                 const formType = formContext.ui.getFormType();
-                // check form types
                 if (formType === 1 /* Xrm.FormType.Create */ || formType === 5 /* Xrm.FormType.QuickCreate */)
                     return;
-                const eventData = yield getRelatedEventData();
-                showStartedOrFinishedEventNotification(eventData);
+                showNotificationIfEventStartedOrFinished();
+                showNotificationIfPaymentIsLate();
             });
         }
         function setPaymentDateOnCreate() {
             if (formContext.ui.getFormType() === 1 /* Xrm.FormType.Create */) {
-                const formAttribute = formContext.getAttribute("nrq_paymentdate");
-                formAttribute === null || formAttribute === void 0 ? void 0 : formAttribute.setValue(new Date());
+                paymentDateAttribute === null || paymentDateAttribute === void 0 ? void 0 : paymentDateAttribute.setValue(new Date());
             }
         }
-        function showStartedOrFinishedEventNotification(eventData) {
+        function showNotificationIfEventStartedOrFinished() {
             return __awaiter(this, void 0, void 0, function* () {
-                if (!((eventData === null || eventData === void 0 ? void 0 : eventData.nrq_date) instanceof Date))
+                const event = yield getRelatedEventData();
+                if (!((event === null || event === void 0 ? void 0 : event.nrq_date) instanceof Date))
                     return;
                 const today = new Date();
-                if (eventData.nrq_date.getTime() < dateWithoutTime(today).getTime()) {
+                if (event.nrq_date.getTime() < dateWithoutTime(today).getTime()) {
                     formContext.ui.setFormNotification('Event is already finished', 'INFO', NOTIFICATION_ID_EVENT_FINISHED);
                     return;
                 }
-                if (isSameDay(eventData.nrq_date, today) && dateWithTime(eventData).getTime() < today.getTime()) {
+                if (isSameDay(event.nrq_date, today) && dateWithTime(event).getTime() < today.getTime()) {
                     formContext.ui.setFormNotification('Event has started (is in progress....)', 'INFO', NOTIFICATION_ID_EVENT_STARTED);
                 }
+            });
+        }
+        function showNotificationIfPaymentIsLate() {
+            return __awaiter(this, void 0, void 0, function* () {
+                const paymentDate = paymentDateAttribute.getValue();
+                if (paymentDate === null)
+                    return;
+                const event = yield getRelatedEventData();
+                if (!((event === null || event === void 0 ? void 0 : event.nrq_date) instanceof Date))
+                    return;
+                if (paymentDate.getTime() > event.nrq_date.getTime())
+                    formContext.ui.setFormNotification('Payment is late', 'WARNING', NOTIFICATION_ID_PAYMENT_LATE);
+                else
+                    formContext.ui.clearFormNotification(NOTIFICATION_ID_PAYMENT_LATE);
             });
         }
         function dateWithTime(event) {
