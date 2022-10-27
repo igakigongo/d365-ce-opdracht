@@ -177,6 +177,7 @@
     <None Include="XrmDefinitelyTyped\XrmDefinitelyTyped.exe.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="WebResources\nrq_\script\Registration.js" />
     <Content Include="WebResources\nrq_\script\XrmQuery\dg.xrmquery.web.js" />
     <Content Include="WebResources\nrq_\script\XrmQuery\dg.xrmquery.web.min.js" />
     <Content Include="WebResources\nrq_\script\XrmQuery\dg.xrmquery.web.promise.min.js" />
